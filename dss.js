@@ -593,7 +593,7 @@ dss.parser("state", function(i, line, block, file){
      states = (values[0]) ? (values[0].replace(":::", ":").replace("::", ":")) : "";
  return {
    name: states,
-   escaped: states.replace(":", " :").replace(".", " ").trim(),
+   escaped: states.replace(":", " :").replace(/\./g, " ").trim(),
    description: (values[1]) ? values[1].trim() : ""
  };
 });

@@ -621,16 +621,31 @@ dss.parser("markup", function(i, line, block, file){
  }
 
  // Removes the `${state}` and any empty attributes.
- var safeMarkup = markup.replace(state, "").replace(emptyAttributes, "");
+ var safeMarkup = markup.replace(state, "").replace(emptyAttributes, ""),
+     result = {};
 
- return {
-   lang: userOptions[1] ? userOptions[1] : "markup",
-   description: userOptions[3] ? marked(userOptions[3]) : "",
-   example: options.example === "true" ? safeMarkup : false,
-   escaped: options.code === "true" ? safeMarkup.replace(/</g, "&lt;").replace(/>/g, "&gt;") : false,
-   modifier: markup.replace(emptyAttributes, ""),
-   path: null // This is inserted by the index.js file
- };
+ result.lang = userOptions[1] ? userOptions[1] : "markup";
+ result.description = userOptions[3] ? marked(userOptions[3]) : "";
+ result.modifier = markup.replace(emptyAttributes, "");
+ result.path = null; // This is inserted by the index.js file
+
+ // the two options that will always be added
+ result.example = options.example === "true" ? safeMarkup : false,
+ result.escaped = options.code === "true" ? safeMarkup.replace(/</g, "&lt;").replace(/>/g, "&gt;") : false,
+
+ // removed because they where already edded to the result
+ delete options.example;
+ delete options.escaped;
+ delete options.code;
+
+ var optionKeys = Object.keys(options);
+ for(var i = 0, l = optionKeys.length; i < l; i++){
+  var key = optionKeys[i],
+      value = options[key];
+  result[key] = value;
+ }
+
+ return result;
 });
 
 // Module exports

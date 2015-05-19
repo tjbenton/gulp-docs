@@ -512,7 +512,7 @@ dss.parser("returns", function(i, line, block, file){
  return {
   type: (line[1]) ? line[1].split(" | ").join(", ") : "-",
   description: line[2] ? marked(line[2]) : "-"
- }
+ };
 });
 
 
@@ -524,7 +524,7 @@ dss.parser("arg", function(i, line, block, file, endOfBlock){
  return {
   helper: dss.getCodeAfterBlock(file, endOfBlock),
   name: line[2] !== undefined ? line[2] : "",
-  type: line[1] ? line[1].split(" | ").join(", ") : "-",
+  type: line[1] ? line[1] : "-",
   default: "-",
   description: line[3] ? marked(line[3]) : "-",
   path: null
@@ -542,7 +542,7 @@ dss.parser("type", function(i, line, block, file, endOfBlock){
      sassVar = code.match(sassVarRegex);
  return {
   name: (sassVar[1]) ? sassVar[1] : "No variable was found",
-  type: (line[1]) ? line[1].split(" | ").join(", ") : "",
+  type: (line[1]) ? line[1] : "",
   description: line[2] ? marked(line[2]) : "",
   variable: sassVar[0] ? sassVar[0] : "No variable was found",
   path: null
@@ -553,8 +553,8 @@ dss.parser("type", function(i, line, block, file, endOfBlock){
 // @author Tyler Benton
 // complete
 dss.parser("todo", function(i, line, block, file){
- var param = /^\s*(?:\{(.*)\})?\s*(?:([^\s\(\-]+))?\s*(?:\((.*)\))?\s*(?:-?\s*(.*))?/
- var a = param.exec(line),
+ var param = /^\s*(?:\{(.*)\})?\s*(?:([^\s\(\-]+))?\s*(?:\((.*)\))?\s*(?:-?\s*(.*))?/,
+     a = param.exec(line),
      assigner = a[2] ? "<a href='slackapi-link'>@" + a[2] + "</a>" : "Who the F is this?",
      assignee = a[3] ? a[3].trim() : "",
      assigneeLink = assigneeLink || [];
